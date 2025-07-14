@@ -1,50 +1,63 @@
 <?php
-// Turn off error display in production
-// ini_set('display_errors', 0);
-// error_reporting(0);
 
-function sanitize($data) {
-    return htmlspecialchars(stripslashes(trim($data)));
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function sendBulkEmail($formData) {
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP Configuration (Update with your SMTP credentials)
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.hostinger.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'help@pcbk.us';
+        $mail->Password   = 'OLUwa@123';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Sender details
+        $mail->setFrom($formData['senderEmail'], $formData['senderName']);
+        $mail->addReplyTo($formData['replyTo']);
+
+        // Subject and Body
+        $mail->Subject = $formData['subject'];
+        $isHTML = ($formData['messageType'] === 'html');
+        $mail->isHTML($isHTML);
+        if ($isHTML) {
+            $mail->Body = $formData['messageContent'];
+            $mail->AltBody = strip_tags($formData['messageContent']);
+        } else {
+            $mail->Body = $formData['messageContent'];
+        }
+
+        // To and BCC
+        $to = trim($formData['to']);
+        if (!empty($to)) {
+            $mail->addAddress($to);
+        }
+
+        $bccList = explode(',', $formData['bcc']);
+        foreach ($bccList as $bcc) {
+            $bcc = trim($bcc);
+            if (!empty($bcc)) {
+                $mail->addBCC($bcc);
+            }
+        }
+
+        // Send Email
+        $mail->send();
+        echo "Success: Email sent.";
+    } catch (Exception $e) {
+        echo "Mailer Error: " . $mail->ErrorInfo;
+    }
 }
 
-// Collect POST data
-$senderName     = sanitize($_POST['senderName'] ?? '');
-$senderEmail    = sanitize($_POST['senderEmail'] ?? '');
-$replyTo        = sanitize($_POST['replyTo'] ?? '');
-$subject        = sanitize($_POST['subject'] ?? '');
-$to             = sanitize($_POST['to'] ?? '');
-$bcc            = sanitize($_POST['bcc'] ?? '');
-$messageType    = sanitize($_POST['messageType'] ?? 'text');
-$messageContent = $_POST['messageContent'] ?? ''; // Don't sanitize HTML content
-
-if (!$senderEmail || !$to || !$subject || !$messageContent) {
-    echo "Error: Missing required fields.";
-    exit;
-}
-
-// Format headers
-$headers = "From: $senderName <$senderEmail>\r\n";
-if (!empty($replyTo)) {
-    $headers .= "Reply-To: $replyTo\r\n";
-}
-if (!empty($bcc)) {
-    $headers .= "Bcc: $bcc\r\n";
-}
-$headers .= "MIME-Version: 1.0\r\n";
-
-if ($messageType === 'html') {
-    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-} else {
-    $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
-}
-
-// Send mail
-$success = mail($to, $subject, $messageContent, $headers);
-
-// Response to frontend
-if ($success) {
-    echo "Success: Email sent.";
-} else {
-    echo "Error: Failed to send email.";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    sendBulkEmail($_POST);
 }
 ?>
