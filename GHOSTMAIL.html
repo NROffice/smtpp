@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>G H O S T M A I L E R</title>
+  <link rel="icon" type="image/x-icon" href="w/favicon.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      max-width: 1000px;
+      margin: 0 auto 40px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: #f9f9f9;
+    }
+
+    textarea {
+      height: 140px;
+      resize: vertical;
+    }
+
+    .submit-button {
+      background-color: green;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background-color: darkgreen;
+    }
+
+    .preview-button {
+      background-color: #1e75d9;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .preview-button:hover {
+      background-color: #51d6fa;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-container img {
+      max-height: 80px;
+    }
+
+    .form-group {
+  max-width: 950px;
+  margin: 0 auto;
+}
+  </style>
+</head>
+<body>
+
+  <div class="logo-container">
+    <img src="w/icon.png" alt="GHOSTMAILER Logo">
+  </div>
+
+  <h1> </h1>
+
+  <form id="emailForm">
+
+    <div class="form-group">
+    <label for="senderName">Sender Name:</label>
+    <input type="text" id="senderName" name="senderName" placeholder="">
+    </div>
+
+    <div class="form-group">
+    <label for="senderEmail">Sender Email:</label>
+    <input type="email" id="senderEmail" name="senderEmail" placeholder="">
+    </div>
+
+
+    <div class="form-group">
+    <label for="replyTo">Reply To:</label>
+    <input type="email" id="replyTo" name="replyTo" placeholder="">
+    </div>
+
+    <div class="form-group">
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" placeholder="">
+    </div>
+
+    <div class="form-group">
+    <label for="to">To:</label>
+    <input type="text" id="to" name="to" placeholder=""/>
+    </div>
+
+    <div class="form-group">
+    <label for="bcc">BCC (max 500 emails, separated by commas):</label>
+    <input type="text" id="bcc" name="bcc" placeholder=""/>
+    </div>
+
+    <div class="form-group">
+    <label for="messageType">Message Type:</label>
+      <select id="messageType" onchange="toggleMessageMode()" style="width: 180px;">
+      <option value="text">Plain Text</option>
+      <option value="html">HTML</option>
+    </select>
+    </div>
+
+    <div class="form-group">
+    <label for="messageContent" id="messageLabel">Plain Text Message:</label>
+    <textarea id="messageContent" name="messageContent" placeholder=""></textarea>
+    </div>
+
+    <div class="form-group" style="display: flex; gap: 10px;">
+    <button type="button" class="preview-button" onclick="previewEmail()">Preview Email</button>
+    <button type="button" class="submit-button" onclick="sendEmail()">Send Email</button>
+</div>
+  </form>
+
+  <h2>EMAIL PREVIEW</h2>
+  <iframe id="previewFrame"></iframe>
+
+<script>
+  function toggleMessageMode() {
+    const type = document.getElementById('messageType').value;
+    const label = document.getElementById('messageLabel');
+    const textarea = document.getElementById('messageContent');
+
+    if (type === 'html') {
+      label.textContent = 'HTML Message:';
+      textarea.placeholder = 'Paste or edit the HTML content...';
+    } else {
+      label.textContent = 'Plain Text Message:';
+      textarea.placeholder = 'Enter the plain text version of the message...';
+    }
+  }
+
+  function validateEmails(emailString) {
+    const emailList = emailString.split(',').map(e => e.trim()).filter(e => e.length > 0);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (emailList.length > 500) {
+      alert(`Too many emails! Maximum allowed is 500. You entered ${emailList.length}.`);
+      return false;
+    }
+
+    const invalidEmails = emailList.filter(email => !emailRegex.test(email));
+    if (invalidEmails.length > 0) {
+      alert("Invalid email(s) found:\n" + invalidEmails.join("\n"));
+      return false;
+    }
+    return true;
+  }
+
+  function previewEmail() {
+    const messageType = document.getElementById('messageType').value;
+    const content = document.getElementById('messageContent').value;
+    const bcc = document.getElementById('bcc').value;
+
+    if (!validateEmails(bcc)) return;
+
+    const iframe = document.getElementById('previewFrame');
+    iframe.srcdoc = messageType === 'html' ? content : `<pre>${content}</pre>`;
+  }
+
+  function sendEmail() {
+    const form = document.getElementById('emailForm');
+    const formData = new FormData(form);
+
+    // Optional: Validate BCC before sending
+    const bcc = formData.get('bcc');
+    if (!validateEmails(bcc)) return;
+
+    fetch('SEND.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data.toLowerCase().includes("success")) {
+        alert("✅ Email sent successfully!");
+      } else {
+        alert("❌ Failed to send email. Response:\n" + data);
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("❌ An error occurred while sending the email.");
+    });
+  }
+</script>
+
+</body>
+</html>
