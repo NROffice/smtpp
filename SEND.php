@@ -13,10 +13,10 @@ function sendBulkEmail($formData) {
     try {
         // SMTP Configuration (Update with your SMTP credentials)
         $mail->isSMTP();
-        $mail->Host       = 'smtp.hostinger.com';
+        $mail->Host       = 'mail.hsbk.us';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'help@pcbk.us';
-        $mail->Password   = 'OLUwa@123';
+        $mail->Username   = 'help@hsbk.us';
+        $mail->Password   = 'BLEssed@123';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
